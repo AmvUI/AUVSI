@@ -80,34 +80,6 @@ int main(int argc, char **argv)
 		}
 	}
 }
-
-void mission_waypoint_running(string waypoint){
-	if(receive_mission != mission_idle){
-		sleep(1);
-		com.mission_makara = waypoint;
-		pub_com_rc.publish(com);
-		
-		sleep(1);
-		changeFlightModeDebug("HOLD");
-		sleep(1);
-		string waypoint_start = waypoint+".start";
-		mission.mission_makara = waypoint_start;
-		pub_mission_rc.publish(mission);
-		sleep(1);
-		system("rosrun mavros mavwp clear"); //clear wp
-		string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_"+waypoint+".waypoints";
-		system(command.c_str());
-		sleep(1);
-		system("rosrun mavros mavsys mode -c AUTO");
-		sleep(10);
-		changeFlightModeDebug("HOLD");
-		
-		string waypoint_end		= waypoint+course_type+".end";
-		mission.mission_makara	= waypoint_end;
-		pub_mission_rc.publish(mission);
-	}
-}
-	
 	
 void waypoint_running(string waypoint, int duration){
 	if(receive_mission != mission_idle){
