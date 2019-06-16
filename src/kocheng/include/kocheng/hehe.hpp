@@ -373,7 +373,7 @@ void HeartbeatMessage::setPayloadCommunication(string timestamp_mission, string 
 	stream << std::hex << crc;
 	std::string ss_check_sum( stream.str() );
 	
-    all_payload = "$" + payload_msg + "*" + ss_check_sum + "r\n";
+    all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
     
     payload = all_payload;
 }
@@ -408,7 +408,7 @@ void DockingMission::setPayloadCommunication(string timestamp_mission, string ti
 	stream << std::hex << crc;
 	std::string ss_check_sum( stream.str() );
 	
-    all_payload = "$" + payload_msg + "*" + ss_check_sum + "r\n";
+    all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
 	
     payload = all_payload;
 }
