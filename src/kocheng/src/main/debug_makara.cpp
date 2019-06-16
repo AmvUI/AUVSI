@@ -22,10 +22,6 @@
 #include "kocheng/image_out.h"
 #include "kocheng/drone_kocheng.h"
 
-#include "pid/plant_msg.h"
-#include "pid/controller_msg.h"
-#include "pid/pid_const_msg.h"
-
 using namespace std;
 
 string drone_status;
@@ -81,17 +77,10 @@ void rc_debug_cb 		(const kocheng::debug_mission& debug);
 void rc_mission_cb 		(const kocheng::mission_status& mission);
 void gps_rc_cb			(const sensor_msgs::NavSatFix& data);
 void compass_rc_cb		(const std_msgs::Float64& msg);
-void pid_effort_x_cb	(const pid::controller_msg& data);
-void pid_const_x_cb		(const pid::pid_const_msg& data);
-void pid_plant_x_cb		(const pid::plant_msg& data);
-void pid_effort_y_cb	(const pid::controller_msg& data);
-void pid_const_y_cb		(const pid::pid_const_msg& data);
-void pid_plant_y_cb		(const pid::plant_msg& data);
 void image_in_cb		(const kocheng::image_in& in);
 void image_out_cb		(const kocheng::image_out& image);
 void decode_status_cb	(const kocheng::decode_status& data);
 void string_payload_cb	(const kocheng::communication& data);
-void ardu_srf_cb		(const std_msgs::Int32MultiArray& data);
 void drone_status_cb	(const kocheng::drone_kocheng& data);
 
 int main(int argc, char **argv)
@@ -106,7 +95,6 @@ int main(int argc, char **argv)
 	ros::Subscriber sub_image_in		= nh.subscribe("/auvsi/image/in", 1, image_in_cb);
 	ros::Subscriber sub_image_out		= nh.subscribe("/auvsi/image/out", 8, image_out_cb);
 	ros::Subscriber sub_run_status		= nh.subscribe("/auvsi/run_course/status", 8, decode_status_cb);
-	ros::Subscriber sub_ardu_srf		= nh.subscribe("/auvsi/ardu/srf", 1, ardu_srf_cb);
 	ros::Subscriber sub_drone_status 	= nh.subscribe("/auvsi/drone/status", 8, drone_status_cb);
 	//ros::Subscriber sub_string_payload	= nh.subscribe("/auvsi/run_course/status", 8, string_payload_cb);
 	
@@ -115,13 +103,6 @@ int main(int argc, char **argv)
 	ros::Subscriber sub_state_rc 		= nh.subscribe("/mavros/state", 8, rc_state_cb);
 	ros::Subscriber sub_gps_cb			= nh.subscribe("/mavros/global_position/global", 8, gps_rc_cb);
 	ros::Subscriber sub_compass_cb		= nh.subscribe("/mavros/global_position/compass_hdg", 8, compass_rc_cb);
-	
-	ros::Subscriber sub_pid_x_in 	= nh.subscribe("/auvsi/pid/inX", 10, pid_plant_x_cb );
-	ros::Subscriber sub_pid_x_out 	= nh.subscribe("/auvsi/pid/outX", 10, pid_effort_x_cb );
-	ros::Subscriber sub_pid_x_const = nh.subscribe("/auvsi/pid/constX", 10, pid_const_x_cb );
-	ros::Subscriber sub_pid_y_in 	= nh.subscribe("/auvsi/pid/inY", 10, pid_plant_y_cb);
-	ros::Subscriber sub_pid_y_out 	= nh.subscribe("/auvsi/pid/outY", 10, pid_effort_y_cb );
-	ros::Subscriber sub_pid_y_const = nh.subscribe("/auvsi/pid/constX", 10, pid_const_y_cb );
 	
 	ROS_WARN("NC : debug_makara.cpp active");
 
@@ -135,11 +116,6 @@ int main(int argc, char **argv)
 		
 		ROS_INFO("compass:%0.2f\t long:%0.2f\t lat:%0.2f", compass_hdg, longitude, latitude);
 		ROS_INFO("long:%0.2f\t lat:%0.2f", longitude, latitude);
-		ROS_INFO(" ");
-		
-		ROS_WARN("NC : topic PID");
-		ROS_INFO("X: kp:%0.2f\t ki:%0.2f\t kd:%0.2f\t setpoint:%d\t state:%d\t effort:%d\t", kp_x, ki_x, kd_x, setpoint_x, state_x, effort_x);
-		ROS_INFO("Y: kp:%0.2f\t ki:%0.2f\t kd:%0.2f\t setpoint:%d\t state:%d\t effort:%d\t", kp_y, ki_y, kd_y, setpoint_y, state_y, effort_y);
 		ROS_INFO(" ");
 		
 		ROS_INFO("steering:%d\t throttle:%d", steering, throttle);
@@ -159,10 +135,7 @@ int main(int argc, char **argv)
 		ROS_WARN("NC: Communication");
 		ROS_INFO("run:%d\t heartbeat:%d\t follow:%d\t docking:%d flag:%d\t", run_course_status, heartbeat_status, follow_status, docking_status, flag_status);
 		ROS_INFO(" ");
-		
-		ROS_WARN("NC: ardu data");
-		ROS_INFO("srf_1:%d\t srf_2:%d\t srf_3:%d\t srf_4:%d\t", srf_1,srf_2,srf_3,srf_4);
-		
+			
 		ROS_WARN("NC: drone data");
 		ROS_INFO("drone: %s", drone_status.c_str());
 		
@@ -173,6 +146,7 @@ int main(int argc, char **argv)
 		ROS_INFO("docking:%s", docking_payload.c_str());
 		ROS_INFO(" ");
 		*/
+		
 		sleep(1);
 		system("clear");
 	}
@@ -262,38 +236,6 @@ void rc_state_cb (const mavros_msgs::State& state){
 	}
 	else{armed = "false";}
 	mode = state.mode;	
-}
-
-void pid_effort_x_cb(const pid::controller_msg& data){
-	effort_x=data.u;
-}
-void pid_const_x_cb(const pid::pid_const_msg& data){
-	kp_x = data.p;
-	ki_x = data.i;
-	kd_x = data.d;
-}
-void pid_plant_x_cb(const pid::plant_msg& data){
-	state_x		= data.x;
-	setpoint_x	= data.setpoint;
-}
-void pid_effort_y_cb(const pid::controller_msg& data){
-	effort_y=data.u;
-}
-void pid_const_y_cb(const pid::pid_const_msg& data){
-	kp_y = data.p;
-	ki_y = data.i;
-	kd_y = data.d;
-}
-void pid_plant_y_cb(const pid::plant_msg& data){
-	state_y		= data.x;
-	setpoint_y	= data.setpoint;
-}
-
-void ardu_srf_cb	(const std_msgs::Int32MultiArray& data){
-	srf_1=data.data[0];
-	srf_2=data.data[1];
-	srf_3=data.data[2];
-	srf_4=data.data[3];
 }
 
 void drone_status_cb	(const kocheng::drone_kocheng& data){

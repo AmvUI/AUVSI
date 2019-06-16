@@ -45,6 +45,7 @@ string flag_3;
 string flag_4;
 
 Mat image;
+int flag_num;
 FlagMission flag_protocol(server_ip, server_port, course_type, team_code);
 
 void imageCallback(const sensor_msgs::CompressedImageConstPtr& msg)
@@ -60,6 +61,7 @@ void imageCallback(const sensor_msgs::CompressedImageConstPtr& msg)
 }
 
 int main(int argc, char **argv){
+	getTime time_lord;
 	ros::init(argc, argv, "navigation");
 	ros::NodeHandle nh;
 	
@@ -99,12 +101,9 @@ int main(int argc, char **argv){
 			if(drone_status=="flag_landing"){
 				ros::spinOnce();
 				
-				vector<int> compression_params; 
-				compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
-				compression_params.push_back(98); 
-				bool cSuccess = imwrite("../docking.jpg", image, compression_params);
+				flag_num = 1;
 				
-				flag_protocol.setPayloadCommunication(follow);
+				flag_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), flag_num);
 				flag_protocol.sendTCP();
 				
 				flag_payload_string.flag_payload = flag_protocol.getPayload();
@@ -112,35 +111,34 @@ int main(int argc, char **argv){
 				pub_run_status.publish(flag_status_decode);
 				pub_payload_status.publish(flag_payload_string);
 				
-				Mat im_gray = imread("../docking.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				Mat img_bw = im_gray > 128;
-				imwrite("../flag_bw.jpg", img_bw);
 				sleep(8);
     
-				system ("tesseract flag_bw.jpg flag_out -l letsgodigital");
-				//################################################# get number from flag_out.txt
-				
 				changeFlightModeDebug("HOLD");
 				system("rosrun mavros mavwp clear");
-				if(flag_number=="1"){
+				if(flag_num==1){
 					system(flag_1.c_str());
-					changeFlightModeDebug("AUTO");
+					system("rosrun mavros mavsys mode -c AUTO");
+					sleep(5);
 				}
-				else if(flag_number=="2"){
+				else if(flag_num==1){
 					system(flag_2.c_str());
-					changeFlightModeDebug("AUTO");
+					system("rosrun mavros mavsys mode -c AUTO");
+					sleep(5);
 				}
-				else if(flag_number=="3"){
+				else if(flag_num==1){
 					system(flag_3.c_str());
-					changeFlightModeDebug("AUTO");
+					system("rosrun mavros mavsys mode -c AUTO");
+					sleep(5);	
 				}
-				else if(flag_number=="4"){
+				else if(flag_num==1){
 					system(flag_4.c_str());
-					changeFlightModeDebug("AUTO");
+					system("rosrun mavros mavsys mode -c AUTO");
+					sleep(5);
 				}
 				else{
 					system(flag_1.c_str());
-					changeFlightModeDebug("AUTO");
+					system("rosrun mavros mavsys mode -c AUTO");
+					sleep(5);
 				}
 				
 				rc_pos.header.stamp = ros::Time::now();

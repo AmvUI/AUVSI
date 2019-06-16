@@ -4,9 +4,6 @@
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/kocheng/drone_kocheng.h
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/kocheng/image_in.h
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/kocheng/image_out.h
-kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/pid/controller_msg.h
-kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/pid/pid_const_msg.h
-kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/devel/include/pid/plant_msg.h
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/src/kocheng/include/kocheng/hehe.hpp
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/src/kocheng/include/kocheng/rapidjson/allocators.h
 kocheng/CMakeFiles/flag_drone.dir/src/drone/flag_drone.cpp.o: /home/mfikih15/Documents/AUVSI/src/kocheng/include/kocheng/rapidjson/document.h

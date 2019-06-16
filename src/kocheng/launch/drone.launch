@@ -1,26 +1,4 @@
 <launch>	
-	<node name="processing_drone" pkg="kocheng" output="screen" type="processing_drone"/>
 	<node name="image_drone" pkg="kocheng" output="screen" type="image_drone" />
 	<node name="flag_drone" pkg="kocheng" output="screen" type="flag_drone" />
-	<node name="docking_drone" pkg="kocheng" output="screen" type="docking_drone"/>
-	
-	<arg name="topic_x_in" default="/auvsi/pid/inX" />
-	<arg name="topic_x_out" default="/auvsi/pid/outX" />
-	<!-- topic for constant x /auvsi/pid/constX -->
-	
-	<arg name="topic_y_in" default="/auvsi/pid/inY" />
-	<arg name="topic_y_out" default="/auvsi/pid/outY" />
-	<!-- topic for constant y /auvsi/pid/constY -->
-	
-	<arg name="kp" default="0" />
-	<arg name="ki" default="0" />
-	<arg name="kd" default="0" />
-	<arg name="pid_rate" default="100" />
-	<arg name="upper_limit" default="2000" />
-	<arg name="lower_limit" default="-2000" />
-	<arg name="anti_windup" default="0.1" />
-	
-	<node name="control_x" pkg="pid" output="screen" type="controller_adaptive_x" args="$(arg kp) $(arg ki) $(arg kd) $(arg pid_rate) -tfp $(arg topic_x_in) -tfc $(arg topic_x_out) -ul $(arg upper_limit) -ll $(arg lower_limit) -aw $(arg anti_windup)" />
-	<node name="control_y" pkg="pid" output="screen" type="controller_adaptive_y" args="$(arg kp) $(arg ki) $(arg kd) $(arg pid_rate) -tfp $(arg topic_y_in) -tfc $(arg topic_y_out) -ul $(arg upper_limit) -ll $(arg lower_limit) -aw $(arg anti_windup)" />
-	
 </launch>

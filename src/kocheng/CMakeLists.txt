@@ -169,12 +169,6 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-
-add_executable(run_course src/communication/run_course.cpp )
-target_link_libraries(run_course
-${catkin_LIBRARIES}
-)
-
 add_executable(heartbeat src/communication/heartbeat.cpp )
 target_link_libraries(heartbeat
 ${catkin_LIBRARIES}
@@ -212,26 +206,6 @@ ${catkin_LIBRARIES}
 ${OpenCV_LIBRARIES}
 )
 
-add_executable(navigation src/mission/navigation.cpp )
-target_link_libraries(navigation
-${catkin_LIBRARIES}
-)
-
-add_executable(speed src/mission/speed.cpp )
-target_link_libraries(speed
-${catkin_LIBRARIES}
-)
-
-add_executable(path src/mission/path.cpp )
-target_link_libraries(path
-${catkin_LIBRARIES}
-)
-
-add_executable(follow src/mission/follow.cpp )
-target_link_libraries(follow
-${catkin_LIBRARIES}
-)
-
 add_executable(flag src/mission/flag.cpp )
 target_link_libraries(flag
 ${catkin_LIBRARIES}
@@ -242,12 +216,6 @@ target_link_libraries(docking
 ${catkin_LIBRARIES}
 )
 
-add_executable(processing_drone src/drone/processing_drone.cpp )
-target_link_libraries(processing_drone
-${catkin_LIBRARIES}
-${OpenCV_LIBRARIES}
-)
-
 add_executable(image_drone src/drone/image_drone.cpp )
 target_link_libraries(image_drone
 ${catkin_LIBRARIES}
@@ -256,12 +224,6 @@ ${OpenCV_LIBRARIES}
 
 add_executable(flag_drone src/drone/flag_drone.cpp )
 target_link_libraries(flag_drone
-${catkin_LIBRARIES}
-${OpenCV_LIBRARIES}
-)
-
-add_executable(docking_drone src/drone/docking_drone.cpp )
-target_link_libraries(docking_drone
 ${catkin_LIBRARIES}
 ${OpenCV_LIBRARIES}
 )

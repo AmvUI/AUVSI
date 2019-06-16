@@ -18,16 +18,16 @@ void imageProcessing	(Mat input_image);
 
 Mat receive_image;
 
-int x_init=5;
-int y_init=5;
+int x_init=25;
+int y_init=25;
 int width=200; //width 400 for simple
 int height=200;
-int LowH=5; 		//0  
-int HighH=5;		//184 
-int LowS=5;      //130  65
-int HighS=5;      //248  246
-int LowV=5;		//49   242
-int HighV=5;		//230  255
+int LowH=0; 		//0  
+int HighH=184;		//184 
+int LowS=130;      //130  65
+int HighS=248;      //248  246
+int LowV=49;		//49   242
+int HighV=230;		//230  255
 int Noise=15;
 
 int state_x;
@@ -190,4 +190,3 @@ void image_in_cb(const kocheng::image_in& in){
 	HighV	= in.HighV;		//230  255
 	Noise	= in.Noise;
 }
-

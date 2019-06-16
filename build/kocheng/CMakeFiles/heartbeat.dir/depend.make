@@ -89,6 +89,7 @@ kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kin
 kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/sensor_msgs/NavSatFix.h
 kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/sensor_msgs/NavSatStatus.h
 kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/std_msgs/Header.h
+kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/std_msgs/Int32.h
 kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/xmlrpcpp/XmlRpcDecl.h
 kocheng/CMakeFiles/heartbeat.dir/src/communication/heartbeat.cpp.o: /opt/ros/kinetic/include/xmlrpcpp/XmlRpcValue.h
 

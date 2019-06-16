@@ -47,6 +47,8 @@ string docking_3;
 Mat image;
 DockingMission docking_protocol(server_ip, server_port, course_type, team_code);
 
+int dock_number;
+
 void imageCallback(const sensor_msgs::CompressedImageConstPtr& msg)
 {
   try
@@ -60,6 +62,8 @@ void imageCallback(const sensor_msgs::CompressedImageConstPtr& msg)
 }
 
 int main(int argc, char **argv){
+	getTime time_lord;
+	
 	ros::init(argc, argv, "navigation");
 	ros::NodeHandle nh;
 	
@@ -85,8 +89,20 @@ int main(int argc, char **argv){
 	while (ros::ok()) {
 		ros::spinOnce();
 		while(receive_mission=="docking.start"){
-			//get ping docking_number
-			
+	
+		//get ping docking_number
+		dock_number=1;
+		
+		docking_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), dock_number);
+		docking_protocol.sendTCP();
+		
+		docking_payload_string.heartbeat_payload=docking_protocol.getPayload();
+		
+		//cout << auvsi_protocol.getPayload();
+		//ROS_INFO_STREAM("Response code : "<<heartbeat_status.data);
+		
+		docking_status_decode.heartbeat_status = docking_protocol.decodeResponeStatus();
+		
 			if(docking_number=="1"){
 				system(docking_1.c_str());
 				system("rosrun mavros mavsys mode -c AUTO");
@@ -109,71 +125,7 @@ int main(int argc, char **argv){
 			}
 			
 			mission.mission_makara="docking.end";
-			pub_mission_rc.publish(mission);
-		
-		/*
-			changeFlightModeDebug("HOLD");
-			ros::spinOnce();
-			drone.drone_status="docking_drone";
-			pub_drone_status.publish(drone);
-			ros::spinOnce();
-			mission.mission_makara == "docking_wait";
-			ros::spinOnce();
-		}
-		while(receive_mission=="docking_wait"){
-			ros::spinOnce();
-			if(drone_status=="docking_landing"){
-				ros::spinOnce();
-				
-				vector<int> compression_params; 
-				compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
-				compression_params.push_back(98); 
-				bool cSuccess = imwrite("../docking.jpg", image, compression_params); 
-			
-				docking_protocol.setPayloadCommunication(follow);
-				docking_protocol.sendTCP();
-		
-				docking_payload_string.docking_payload = docking_protocol.getPayload();
-				docking_status_decode.docking_status = docking_protocol.decodeResponeStatus();
-				pub_run_status.publish(docking_status_decode);
-				pub_payload_status.publish(docking_payload_string);
-				
-				Mat im_gray = imread("../docking.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				Mat img_bw = im_gray > 128;
-				imwrite("../docking_bw.jpg", img_bw);
-				sleep(8);
-    
-				system ("tesseract docking_bw.jpg docking_out -l letsgodigital");
-				//################################################# get number from docking_out.txt
-				
-				changeFlightModeDebug("HOLD");
-				system("rosrun mavros mavwp clear");
-				if(docking_number=="1"){
-					system(docking_1.c_str());
-					changeFlightModeDebug("AUTO");
-				}
-				else if(docking_number=="2"){
-					system(docking_2.c_str());
-					changeFlightModeDebug("AUTO");
-				}
-				else if(docking_number=="3"){
-					system(docking_3.c_str());
-					changeFlightModeDebug("AUTO");
-				}
-				else{
-					system(docking_1.c_str());
-					changeFlightModeDebug("AUTO");
-				}
-				
-				rc_pos.header.stamp = ros::Time::now();
-				rc_pos.header.frame_id = "1";
-				rc_pos.pose.position.x = x_docking_crash; 
-				pub_rc_pos.publish(rc_pos);
-					
-				mission.mission_makara="docking.end";
-				pub_mission_rc.publish(mission);
-			}
-			*/
+			pub_mission_rc.publish(mission);	
 		}
 	}
 }

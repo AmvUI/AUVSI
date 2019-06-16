@@ -31,6 +31,7 @@ string	course_type 		= "kolam"; //courseA courseB courseC courseUI kolam
 #define THROTTLE 2
 #define SIMPLE_PIN 3
 #define CAMERA_SERVO 1
+#define MOTOR_PIN 4
 
 #define MAX_THROTTLE 1900//1750
 #define MIN_THROTTLE 1100
@@ -54,140 +55,6 @@ int number_camera=0;
 int zero_flag 		= 0;
 int first_simple 	= 1;
 int second_simple 	= 2;
-
-//###############################################################################################  NAVIGATION VARIABLE  ###############
-#define THROT_NAV 1650
-
-float longitude_nav_end_A=1551;
-float latitude_nav_end_A=12515;
-
-float longitude_nav_end_B=1161;
-float latitude_nav_end_B=3161613;
-
-float longitude_nav_end_C=21515;
-float latitude_nav_end_C=136136;
-
-float longitude_nav_end_UI=13613631;
-float latitude_nav_end_UI=3161361;
-
-float tolerance_nav=12516;
-float kp_nav = 1.2;//1.5
-float ki_nav = 0.2;//1
-float kd_nav = 0.5;//0.5
-int setpoint_nav=160;
-int x_nav=0;
-int y_nav=180;
-int width_nav=320; //width 400 for simple
-int height_nav=180;
-int LowH_nav	= 0; 		//0  
-int HighH_nav 	= 184;		//184 
-int LowS_nav 	= 130;      //130  65
-int HighS_nav 	= 248;      //248  246
-int LowV_nav 	= 49;		//49   242
-int HighV_nav 	= 230;		//230  255
-int Noise_nav 	= 15;
-
-//####################################################################################	SPEEED VARIABLE  ###############
-#define THROT_SPEED 1650
-
-float longitude_speed_end_A=0;
-float latitude_speed_end_A=0;
-
-float longitude_speed_end_B=0;
-float latitude_speed_end_B=0;
-
-float longitude_speed_end_C=0;
-float latitude_speed_end_C=0;
-
-float longitude_speed_end_UI=0;
-float latitude_speed_end_UI=0;
-
-float tolerance_speed=0;
-
-double compass_point=60;
-double compass_tolerance = 5;
-
-//blue buoy
-float kp_speed= 1.2;//1.5
-float ki_speed = 0.2;//1
-float kd_speed = 0.5;//0.5
-int setpoint_speed=50;
-int x_speed=0;
-int y_speed=180;
-int width_speed	=320; //width 400 for simple
-int height_speed=180;
-int LowH_speed	= 0; 		//0  
-int HighH_speed = 184;		//184 
-int LowS_speed 	= 130;      //130  65
-int HighS_speed = 248;      //248  246
-int LowV_speed 	= 49;		//49   242
-int HighV_speed = 230;		//230  255
-int Noise_speed = 15;
-
-//red buoy
-float kp_speed_new= 1.65;//1.5
-float ki_speed_new = 1;//1
-float kd_speed_new = 0.5;//0.5
-int setpoint_speed_new=160;
-int x_speed_new=0;
-int y_speed_new=180;
-int width_speed_new	=320; //width 400 for simple
-int height_speed_new=180;
-int LowH_speed_new	= 0; 		//0  
-int HighH_speed_new = 184;		//184 
-int LowS_speed_new 	= 130;      //130  65
-int HighS_speed_new = 248;      //248  246
-int LowV_speed_new 	= 49;		//49   242
-int HighV_speed_new = 230;		//230  255
-int Noise_speed_new = 15;
-
-//#################################################################################################	PATH	##############################################
-#define THROT_PATH 1650
-
-//################################################################################################  FOLLOW  ###############
-#define THROT_FOLLOW 1650
-#define CAM_FOLLOW_PWM 1700
-
-double compass_point_follow=300;
-
-float longitude_follow_end_A=0;
-float latitude_follow_end_A=0;
-
-float longitude_follow_end_B=0;
-float latitude_follow_end_B=0;
-
-float longitude_follow_end_C=0;
-float latitude_follow_end_C=0;
-
-float longitude_follow_end_UI=0;
-float latitude_follow_end_UI=0;
-
-float tolerance_follow=0;
-
-float kp_follow_x = 1.65;//1.5
-float ki_follow_x = 1;//1
-float kd_follow_x = 0.5;//0.5
-int setpoint_follow_x=160;
-
-float kp_follow_y = 1.65;//1.5
-float ki_follow_y = 1;//1
-float kd_follow_y = 0.5;//0.5
-int setpoint_follow_y=160;
-
-int x_follow=0;
-int y_follow=180;
-
-int width_follow=280; //width 400 for simple
-int height_follow=180;
-
-int LowH_follow		= 0; 		//0  
-int HighH_follow 	= 184;		//184 
-int LowS_follow 	= 130;      //130  65
-int HighS_follow 	= 248;      //248  246
-int LowV_follow 	= 49;		//49   242
-int HighV_follow 	= 230;		//230  255
-int Noise_follow 	= 15;
-
 
 //################################################################################################  FLAG  ###############
 #define THROT_FLAG 1650
@@ -226,8 +93,9 @@ int setpoint_drone_y=160;
 
 //############################################################################################# COMMUNICATION ####################################################
 using namespace rapidjson;
+int nmea0138_checksum(const char *nmea_data);
 
-enum communicationType {navigation, speed, docking, path, follow, flag, return_dock, start_run, end_run};
+enum communicationType {docking, flag, return_dock,};
 
 // ######################################################################################## JSONHandler struct ########################################## //
 struct JSONHandler {
@@ -414,23 +282,14 @@ void AUVSICommunication::setCourseType(string course_type){
 }
 
 int AUVSICommunication::decodeResponeStatus(){
-    if (response_message.find("HTTP/1.1 200") != std::string::npos) {
+    if (response_message.find("success") != std::string::npos) {
 		return 200;
     }
-    else if (response_message.find("HTTP/1.1 400") != std::string::npos) {
+    else if (response_message.find("Invalid checksum") != std::string::npos) {
 		return 400;
     }
-    else if (response_message.find("HTTP/1.1 404") != std::string::npos) {
+    else if (response_message.find("Invalid") != std::string::npos) {
 		return 404;
-    }
-    else if (response_message.find("HTTP/1.1 500") != std::string::npos) {
-		return 500;
-    }
-    else if (response_message.find("HTTP/1.1 503") != std::string::npos) {
-		return 503;
-    }
-      else if (response_message.find("HTTP/1.1 100") != std::string::npos) {
-		return 100;
     }
     else {
 		return -1;
@@ -480,7 +339,7 @@ class HeartbeatMessage : public AUVSICommunication {
 	public:
 
 		HeartbeatMessage(string hostname, int port_number, string course_type, string team_code);
-		void setPayloadCommunication(string timestamp_mission, string challenge, float latitude, float longitude);
+		void setPayloadCommunication(string timestamp_mission, string timestamp_hours, string challenge, float latitude, float longitude, int system_mode);
 		void setGPSPrecision          (int gps_precision);
 };
 
@@ -492,117 +351,31 @@ void HeartbeatMessage::setGPSPrecision(int gps_precision){
     this->gps_precision = gps_precision;
 }
 
-void HeartbeatMessage::setPayloadCommunication(string timestamp_mission, string challenge, float latitude, float longitude){
-    string filename = "/heartbeat/" + course_type + "/";
-    filename.append(team_code);
-    string payload_stream;
-    payload_stream.append("{\"timestamp\":\"" + timestamp_mission + "\",");
-    payload_stream.append("\"challenge\":\"" + challenge + "\",");
-    payload_stream.append("\"position\":{\"datum\":\"WGS84\",\"latitude\":");
+void HeartbeatMessage::setPayloadCommunication(string timestamp_mission, string timestamp_hours, string challenge, float latitude, float longitude, int system_mode){
     std::stringstream ss_lat;
-    ss_lat << std::setprecision(gps_precision) << latitude;
+    ss_lat << latitude;
     std::stringstream ss_long;
-    ss_long << std::setprecision(gps_precision) << longitude;
-    payload_stream.append(ss_lat.str() + ",\"longitude\":" + ss_long.str() + "}}");
-
-    int payload_size = payload_stream.size();
-    string http_request;
-    http_request.append("POST "+ filename +" HTTP/1.1\r\n");
-    http_request.append("Host: " + hostname + ":" + to_string(port_number) + "\r\n");
-    http_request.append("Content-Length: "+ to_string(payload_size) + "\r\n");
-    http_request.append("Content-Type: application/json\r\n\r\n");
-    http_request.append(payload_stream);
-
-    payload = http_request;
-}
-
-  // ######################################################################################## StartEndRunMessage class ########################################## //
-
-class StartEndRunMessage : public AUVSICommunication {
-
-	public:
-
-		StartEndRunMessage(string hostname, int port_number, string course_type, string team_code);
-		bool setPayloadCommunication(communicationType comm_type);
-};
-
-
-StartEndRunMessage::StartEndRunMessage(string hostname, int port_number, string course_type, string team_code)
-	:AUVSICommunication(hostname, port_number, course_type, team_code){}
-
-bool StartEndRunMessage::setPayloadCommunication(communicationType comm_type){
-    if (comm_type == start_run || comm_type == end_run ){
-		string course_description = "empty";
-
-		if (comm_type == start_run){
-			course_description = "start";
-		} 
-		else if (comm_type == end_run){
-			course_description = "end";
-		}
-
-		string filename;
-		string http_request;
-		filename.append("/run/" + course_description + "/" + course_type + "/" + team_code);
-		http_request.append("POST "+ filename +" HTTP/1.1\r\n");
-		http_request.append("Host: " + hostname + ":" + to_string(port_number) + "\r\n");
-		http_request.append("Content-Length: 0\r\n");
-		http_request.append("Content-Type: application/json\r\n\r\n");
-
-		payload = http_request;
-		return true;
-    }
-    return false;
-}
-// ################################################################################### START MISSION CLASS ########################################## //
-class MissionMessage : public AUVSICommunication {
-
-	public:
-		MissionMessage(string hostname, int port_number, string course_type, string team_code);
-		bool setPayloadCommunication(communicationType comm_type);
-};
-
-MissionMessage::MissionMessage(string hostname, int port_number, string course_type, string team_code)
-  : AUVSICommunication(hostname, port_number, course_type, team_code){}
-
-bool MissionMessage::setPayloadCommunication(communicationType comm_type){
-
-    if (comm_type == navigation || comm_type == speed || comm_type == docking || comm_type == path || comm_type == follow || comm_type == flag || comm_type == return_dock ){
-
-      string course_description;
-
-      if (comm_type == navigation){
-			course_description = "navigation";
-      } 
-      else if (comm_type == speed){
-			course_description = "speed";
-      }
-      else if (comm_type == docking){
-			course_description = "docking";
-      }
-      else if (comm_type == path){
-			course_description = "path";
-      }
-      else if (comm_type == follow){
-			course_description = "followLeader";
-      }
-      else if (comm_type == flag){
-			course_description = "flag";
-      }
-      else if (comm_type == return_dock){
-			course_description = "return";
-      }
-
-      string filename;
-      string http_request;
-      filename.append("/" + course_description + "/" + course_type + "/" + team_code);
-      http_request.append("GET "+ filename +" HTTP/1.1\r\n");
-      http_request.append("Host: " + hostname + ":" + to_string(port_number) + "\r\n");
-      http_request.append("Accept: */*\r\n\r\n");
-      payload = http_request;
-      return true;
-   }
-   return false;
+    ss_long << longitude;
+	std::stringstream ss_system_mode;
+	ss_system_mode << system_mode;
+	
+    string payload_msg;
+    string all_payload;
+	string send_payload;
+	
+    payload_msg = "RBHRB," + timestamp_mission + "," + timestamp_hours + "," + ss_lat.str() + ",N," + ss_long.str() + ",W," + team_code + "," + ss_system_mode.str();
+    
+    int crc = payload_msg[0];
+	for(int i = 1 ;i < payload_msg.size();i++){
+		crc =  crc ^ payload_msg[i];
+	}
+	std::stringstream stream;
+	stream << std::hex << crc;
+	std::string ss_check_sum( stream.str() );
+	
+    all_payload = "$" + payload_msg + "*" + ss_check_sum + "r\n";
+    
+    payload = all_payload;
 }
 
 // ################################################################################################ DockingMessage class ########################################## //
@@ -610,157 +383,67 @@ class DockingMission : public AUVSICommunication {
 
 	public:
 		DockingMission(string hostname, int port_number, string course_type, string team_code);
-		bool setPayloadCommunication(communicationType comm_type);
+		void setPayloadCommunication (string timestamp_mission, string timestamp_hours, int dock_number);
 };
 
 DockingMission::DockingMission(string hostname, int port_number, string course_type, string team_code)
   : AUVSICommunication(hostname, port_number, course_type, team_code){}
 
-bool DockingMission::setPayloadCommunication(communicationType comm_type){
-
-    if (comm_type == navigation || comm_type == speed || comm_type == docking || comm_type == path || comm_type == follow || comm_type == flag || comm_type == return_dock ){
-
-      string course_description;
-
-      if (comm_type == navigation){
-			course_description = "navigation";
-      } 
-      else if (comm_type == speed){
-			course_description = "speed";
-      }
-      else if (comm_type == docking){
-			course_description = "docking";
-      }
-      else if (comm_type == path){
-			course_description = "path";
-      }
-      else if (comm_type == follow){
-			course_description = "followLeader";
-      }
-      else if (comm_type == flag){
-			course_description = "flag";
-      }
-      else if (comm_type == return_dock){
-			course_description = "return";
-      }
-
-		string filename;
-		string http_request;
-		filename.append(course_description + "/image/" + course_type + "/" + team_code);
-		http_request.append("POST "+ filename +" HTTP/1.1\r\n");
-		http_request.append("Content-Type: multipart/form-data; boundary=PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV\r\n");
-		http_request.append("Host: " + hostname + ":" + to_string(port_number) + "\r\n");
-		http_request.append("Accept: */*\r\n");
-		http_request.append("Content-Length: 7280\r\n");
-		http_request.append("Expect: 100-continue\r\n\r\n");
+void DockingMission::setPayloadCommunication(string timestamp_mission, string timestamp_hours, int dock_number){
+	string payload_msg;
+    string all_payload;
+	string send_payload;
 	
-		http_request.append("--PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV");
-		http_request.append("Content-Disposition: form-data; name=docking; filename=../docking.jpg");
-		http_request.append("Content-Type: application/octet-stream\r\n");
-		http_request.append("c1790bde8f831e7c\r\n");
-		http_request.append("--PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV\r\n\r\n");
-		
-		payload = http_request;
-		return true;
-   }
-   return false;
-   
-	//> POST /docking/image/courseA/AUVSI HTTP/1.1
-	//> Content-Type: multipart/form-data; boundary=PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//> User-Agent: curl/7.38.0
-	//> Host: 127.0.0.1:8080
-	//> Accept: */*
-	//> Content-Length: 7280
-	//> Expect: 100-continue
-	//>
-	//< HTTP/1.1 100 Continue
-	//> --PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//> Content-Disposition: form-data; name="file"; filename="test.jpg"
-	//> Content-Type: application/octet-stream
-	//>
-	//> c1790bde8f831e7c
-	//> --PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//>
-	//< HTTP/1.1 202 Accepted
+	
+	std::stringstream ss_dock_number;
+	ss_dock_number << dock_number;
+	
+    payload_msg = "RBDOK," + timestamp_mission + "," + timestamp_hours + "," + team_code + "," + ss_dock_number.str();
+    
+    int crc = payload_msg[0];
+	for(int i = 1 ;i < payload_msg.size();i++){
+		crc =  crc ^ payload_msg[i];
+	}
+	std::stringstream stream;
+	stream << std::hex << crc;
+	std::string ss_check_sum( stream.str() );
+	
+    all_payload = "$" + payload_msg + "*" + ss_check_sum + "r\n";
+	
+    payload = all_payload;
 }
 
 // ################################################################################################ FlagMessage class ########################################## //
 class FlagMission : public AUVSICommunication {
-
 	public:
 		FlagMission(string hostname, int port_number, string course_type, string team_code);
-		bool setPayloadCommunication(communicationType comm_type);
+		void setPayloadCommunication (string timestamp_mission, string timestamp_hours, int flag_number);
 };
 
 FlagMission::FlagMission(string hostname, int port_number, string course_type, string team_code)
   : AUVSICommunication(hostname, port_number, course_type, team_code){}
 
-bool FlagMission::setPayloadCommunication(communicationType comm_type){
-
-    if (comm_type == navigation || comm_type == speed || comm_type == docking || comm_type == path || comm_type == follow || comm_type == flag || comm_type == return_dock ){
-
-      string course_description;
-
-      if (comm_type == navigation){
-			course_description = "navigation";
-      } 
-      else if (comm_type == speed){
-			course_description = "speed";
-      }
-      else if (comm_type == docking){
-			course_description = "docking";
-      }
-      else if (comm_type == path){
-			course_description = "path";
-      }
-      else if (comm_type == follow){
-			course_description = "followLeader";
-      }
-      else if (comm_type == flag){
-			course_description = "flag";
-      }
-      else if (comm_type == return_dock){
-			course_description = "return";
-      }
-
-		string filename;
-		string http_request;
-		filename.append(course_description + "/image/" + course_type + "/" + team_code);
-		http_request.append("POST "+ filename +" HTTP/1.1\r\n");
-		http_request.append("Content-Type: multipart/form-data; boundary=PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV\r\n");
-		http_request.append("Host: " + hostname + ":" + to_string(port_number) + "\r\n");
-		http_request.append("Accept: */*\r\n");
-		http_request.append("Content-Length: 7280\r\n");
-		http_request.append("Expect: 100-continue\r\n\r\n");
+void FlagMission::setPayloadCommunication(string timestamp_mission, string timestamp_hours, int flag_number){
+	string payload_msg;
+    string all_payload;
+	string send_payload;
 	
-		http_request.append("--PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV");
-		http_request.append("Content-Disposition: form-data; name=flag; filename=../flag.jpg");
-		http_request.append("Content-Type: application/octet-stream\r\n");
-		http_request.append("c1790bde8f831e7c\r\n");
-		http_request.append("--PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV\r\n\r\n");
-		
-		payload = http_request;
-		return true;
-   }
-   return false;
-   
-	//> POST /docking/image/courseA/AUVSI HTTP/1.1
-	//> Content-Type: multipart/form-data; boundary=PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//> User-Agent: curl/7.38.0
-	//> Host: 127.0.0.1:8080
-	//> Accept: */*
-	//> Content-Length: 7280
-	//> Expect: 100-continue
-	//>
-	//< HTTP/1.1 100 Continue
-	//> --PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//> Content-Disposition: form-data; name="file"; filename="test.jpg"
-	//> Content-Type: application/octet-stream
-	//>
-	//> c1790bde8f831e7c
-	//> --PqjtwSukItOMmSZ6NSvgT661LL9lxkOHSdnV
-	//>
-	//< HTTP/1.1 202 Accepted
+	std::stringstream ss_flag_number;
+	ss_flag_number << flag_number;
+	
+    payload_msg = "RBFLG," + timestamp_mission + "," + timestamp_hours + "," + team_code + "," + ss_flag_number.str();
+    
+    int crc = payload_msg[0];
+	for(int i = 1 ;i < payload_msg.size();i++){
+		crc =  crc ^ payload_msg[i];
+	}
+	std::stringstream stream;
+	stream << std::hex << crc;
+	std::string ss_check_sum( stream.str() );
+	
+    all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
+	
+    payload = all_payload;
 }
 
 // ####################################################################################################### start of getTime class ########################################## //
@@ -780,7 +463,8 @@ class getTime {
 		string getHour();
 		string getMinute();
 		string getSecond();
-		string getYMDHS();
+		string getYMD();
+		string getHMS();
 };
 
 getTime::getTime(){
@@ -854,7 +538,12 @@ string getTime::getSecond(){
     }
 }
 
-string getTime::getYMDHS(){
-    string complete_date = this->getYear() + this->getMonth() + this->getDay() + this->getHour() + this-> getMinute() + this->getSecond();
-    return complete_date;
+string getTime::getYMD(){
+    string complete_ymd = this->getYear() + this->getMonth() + this->getDay() + this->getHour() + this-> getMinute() + this->getSecond();
+    return complete_ymd;
+}
+
+string getTime::getHMS(){
+    string complete_hms = this->getHour() + this-> getMinute() + this->getSecond();
+    return complete_hms;
 }

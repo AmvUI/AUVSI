@@ -3,6 +3,7 @@
 #include "kocheng/com_auvsi.h"
 #include "kocheng/decode_status.h"
 #include "kocheng/communication.h"
+#include "std_msgs/Int32.h"
 #include "sensor_msgs/NavSatFix.h"
 #include <string.h>
 #include <iostream>
@@ -14,6 +15,7 @@ using namespace std;
 
 void rc_com_cb	(const kocheng::com_auvsi& data);
 void globalPositionCB(const sensor_msgs::NavSatFix& msg);
+void modeCB(const std_msgs::Int32& data);
 
 sensor_msgs::NavSatFix	global_position;
 kocheng::decode_status heartbeat_status_decode;
@@ -21,6 +23,8 @@ kocheng::communication heartbeat_payload_string;
 
 ros::Publisher pub_run_status;
 ros::Publisher pub_payload_status;
+
+int mode;
 
 int main(int argc, char **argv){
 	
@@ -34,6 +38,7 @@ int main(int argc, char **argv){
 	
 	ros::Subscriber sub_com_rc	 	= heartbeat_nh.subscribe("/auvsi/rc/com", 16, rc_com_cb);
 	ros::Subscriber sub_global_position = heartbeat_nh.subscribe("/mavros/global_position/global", 1, globalPositionCB);
+	ros::Subscriber sub_mode_rc = heartbeat_nh.subscribe("/auvsi/mode/number", 1, modeCB);
 	
 	HeartbeatMessage auvsi_protocol(server_ip, server_port, course_type, team_code);
 	
@@ -48,7 +53,7 @@ int main(int argc, char **argv){
 	ROS_INFO("Starting Heartbeat.");
 
 	while(ros::ok()){
-		auvsi_protocol.setPayloadCommunication(time_lord.getYMDHS(), challenge_status, global_position.latitude,global_position.longitude);
+		auvsi_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), challenge_status, global_position.latitude,global_position.longitude,mode);
 		auvsi_protocol.sendTCP();
 		
 		heartbeat_payload_string.heartbeat_payload=auvsi_protocol.getPayload();
@@ -74,4 +79,7 @@ void globalPositionCB(const sensor_msgs::NavSatFix& msg){
 	global_position.latitude 	= msg.latitude;
 	global_position.longitude 	= msg.longitude;
 	global_position.altitude 	= msg.altitude;
+}
+void modeCB(const std_msgs::Int32& data){
+	mode = data.data;
 }

@@ -22,7 +22,7 @@ std_msgs::Int32	mode;
 
 void rc_number_cb			(const kocheng::rc_number& number);
 void rc_mission_cb			(const kocheng::mission_status& data);
-void waypoint_running		(string waypoint);
+void waypoint_running		(string waypoint, int duration);
 void mission_running		(string mission_name);
 void mission_waypoint_running(string waypoint);
 bool changeFlightMode		(const char* flight_mode);
@@ -55,103 +55,19 @@ int main(int argc, char **argv)
 			mode.data=2;
 			pub_mode_rc.publish(mode);
 			
-			mission.mission_makara = "start_run";
-			pub_mission_rc.publish(mission);
+			waypoint_running("three_mission", 50);
 			
-			waypoint_running("navigation_gate");
-			mission_waypoint_running("navigation");
-			
-			waypoint_running("speed_gate");
-			mission_waypoint_running("speed");
-			
-			waypoint_running("path_gate");
-			mission_waypoint_running("path");
-			
-			/*
-			waypoint_running("docking_gate");
+			waypoint_running("docking_gate",10);
 			mission_running("docking");
-			waypoint_running("docking_end");
+			waypoint_running("docking_end",10);
 			
-			waypoint_running("push_gate");
+			waypoint_running("push_gate", 10);
 			mission_running("push");
-			*/
-			waypoint_running("return");
+
+			waypoint_running("return", 10);
 						
-			mission.mission_makara = "end_run";
-			pub_mission_rc.publish(mission);
-			
-			ros::spinOnce();
-			
-			//waypoint_running("follow_gate");
-			//mission_running("follow");
-			
-			/*
-			ROS_ERROR("1");
-			mode.data=1;
-			pub_mode_rc.publish(mode);
-			
-			mission.mission_makara = "start_run";
-			pub_mission_rc.publish(mission);
-			
-			//waypoint_running("navigation_gate");
-			//mission_running("navigation");
-			
-			//waypoint_running("speed_gate");
-			mission_running("speed");
-			
-			waypoint_running("path_gate");
-			mission_running("path");
-			
-			//waypoint_running("follow_gate");
-			//mission_running("follow");
-			
-			waypoint_running("docking_gate");
-			mission_running("docking");
-			
-			waypoint_running("push_gate");
-			mission_running("push");
-			
-			waypoint_running("return");
-						
-			mission.mission_makara = "end_run";
-			pub_mission_rc.publish(mission);
-			*/
-		}
-		/*
-		else if(rc_flag_in == second_simple){
-			ROS_ERROR("2");
-			mode.data=2;
-			pub_mode_rc.publish(mode);
-			
-			mission.mission_makara = "start_run";
-			pub_mission_rc.publish(mission);
-			
-			waypoint_running("navigation_gate");
-			mission_waypoint_running("navigation");
-			
-			waypoint_running("speed_gate");
-			mission_waypoint_running("speed");
-			
-			waypoint_running("path_gate");
-			mission_waypoint_running("path");
-			
-			//waypoint_running("follow_gate");
-			//mission_running("follow");
-			
-			waypoint_running("docking_gate");
-			mission_waypoint_running("docking");
-			
-			waypoint_running("push_gate");
-			mission_running("push");
-			
-			waypoint_running("return");
-						
-			mission.mission_makara = "end_run";
-			pub_mission_rc.publish(mission);
-			
 			ros::spinOnce();
 		}
-		*/
 		
 		else if(rc_flag_in == zero_flag){
 			mode.data=0;
@@ -182,7 +98,6 @@ void mission_waypoint_running(string waypoint){
 		string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_"+waypoint+".waypoints";
 		system(command.c_str());
 		sleep(1);
-		//changeFlightModeDebug("AUTO");
 		system("rosrun mavros mavsys mode -c AUTO");
 		sleep(10);
 		changeFlightModeDebug("HOLD");
@@ -194,7 +109,7 @@ void mission_waypoint_running(string waypoint){
 }
 	
 	
-void waypoint_running(string waypoint){
+void waypoint_running(string waypoint, int duration){
 	if(receive_mission != mission_idle){
 		sleep(1);
 		changeFlightModeDebug("HOLD");
@@ -207,9 +122,8 @@ void waypoint_running(string waypoint){
 		string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_"+waypoint+".waypoints";
 		system(command.c_str());
 		sleep(1);
-		//changeFlightModeDebug("AUTO");
 		system("rosrun mavros mavsys mode -c AUTO");
-		sleep(10);
+		sleep(duration);
 		changeFlightModeDebug("HOLD");
 		sleep(1);
 		
