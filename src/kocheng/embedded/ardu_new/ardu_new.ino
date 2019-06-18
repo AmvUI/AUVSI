@@ -53,7 +53,7 @@ void loop() {
   Serial.println(button_value);
   Serial.println("    ");
 
-  if (pwm_value1<middle_pwm)
+  if (pwm_value1<middle_pwm || button_value < 900)
   {
     digitalWrite (kill_1,HIGH);
     digitalWrite (kill_2,HIGH);
