@@ -18,10 +18,10 @@ void imageProcessing	(Mat input_image);
 
 Mat receive_image;
 
-int x_init=25;
-int y_init=25;
-int width=200; //width 400 for simple
-int height=200;
+int x_init=50;
+int y_init=100;
+int width=500; //width 400 for simple
+int height=300;
 int LowH=0; 		//0  
 int HighH=184;		//184 
 int LowS=130;      //130  65
