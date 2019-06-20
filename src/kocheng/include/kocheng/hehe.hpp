@@ -32,6 +32,7 @@ string	course_type 		= "courseB"; //courseA courseB courseC courseUI kolam
 #define SIMPLE_PIN 3
 #define CAMERA_SERVO 1
 #define MOTOR_PIN 4
+#define MODE_PIN 7
 
 #define MAX_THROTTLE 1900//1750
 #define MIN_THROTTLE 1100

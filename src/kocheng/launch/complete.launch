@@ -1,13 +1,6 @@
 <launch>	
-	<node name="motor_controller" pkg="kocheng" output="screen" type="motor_controller"/>
-	<node name="node_controller" pkg="kocheng" output="screen" type="node_controller" />
+	<node name="heartbeat" pkg="kocheng" output="screen" type="heartbeat" />
 	<node name="remote_monitor" pkg="kocheng" output="screen" type="remote_monitor" />
 	<node name="image_front" pkg="kocheng" output="screen" type="image_front" />
 	<node name="image_processing" pkg="kocheng" output="screen" type="image_processing" />
-	<!-- node name="debug_makara" pkg="kocheng" output="screen" type="debug_makara"-->
-	
-	<node name="flag" pkg="kocheng" output="screen" type="flag" />
-	<node name="docking" pkg="kocheng" output="screen" type="docking"/>
-	
-	<node name="heartbeat" pkg="kocheng" output="screen" type="heartbeat" />
 </launch>

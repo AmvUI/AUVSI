@@ -74,12 +74,13 @@ void rcinReceiver(const mavros_msgs::RCIn& rc_in_data){
 	
 	
 	
+	
 	//for communication
 	if(rc_in_data_channel[MOTOR_PIN] > MIDDLE_PWM){//motor off
 		mode.data = 3;
 	}
 	else{
-		if(rc_in_data_channel[SIMPLE_PIN] > MIDDLE_PWM){
+		if(rc_in_data_channel[MODE_PIN] < PWM_LOW){
 			mode.data = 2;
 		}
 		else{

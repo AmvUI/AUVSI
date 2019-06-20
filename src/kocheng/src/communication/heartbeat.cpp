@@ -51,7 +51,11 @@ int main(int argc, char **argv){
 	*/
 
 	ROS_INFO("Starting Heartbeat.");
-
+	
+	system("rosrun mavros mavwp clear"); //clear wp
+	string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_all.waypoints";
+	system(command.c_str());
+	
 	while(ros::ok()){
 		auvsi_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), challenge_status, global_position.latitude,global_position.longitude,mode);
 		auvsi_protocol.sendTCP();
@@ -60,7 +64,6 @@ int main(int argc, char **argv){
 		
 		cout << auvsi_protocol.getPayload()<<endl;
 		cout << auvsi_protocol.getResponse()<<endl;
-		//ROS_INFO_STREAM("Response code : "<<auvsi_protocol.data);
 		
 		heartbeat_status_decode.heartbeat_status = auvsi_protocol.decodeResponeStatus();
 		pub_run_status.publish(heartbeat_status_decode);
