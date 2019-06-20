@@ -108,6 +108,9 @@ int main(int argc, char **argv){
 				
 				flag_payload_string.flag_payload = flag_protocol.getPayload();
 				flag_status_decode.flag_status = flag_protocol.decodeResponeStatus();
+				
+				//cout << flag_protocol.getPayload();
+				
 				pub_run_status.publish(flag_status_decode);
 				pub_payload_status.publish(flag_payload_string);
 				

@@ -1,0 +1,5 @@
+<launch>	
+	<node name="image_front" pkg="kocheng" output="screen" type="image_front" />
+	<node name="image_processing" pkg="kocheng" output="screen" type="image_processing" />
+</launch>
+	

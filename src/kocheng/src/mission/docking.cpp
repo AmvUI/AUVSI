@@ -96,9 +96,9 @@ int main(int argc, char **argv){
 		docking_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), dock_number);
 		docking_protocol.sendTCP();
 		
-		docking_payload_string.heartbeat_payload=docking_protocol.getPayload();
+		docking_payload_string.docking_payload=docking_protocol.getPayload();
 		
-		//cout << auvsi_protocol.getPayload();
+		//cout << docking_protocol.getPayload();
 		//ROS_INFO_STREAM("Response code : "<<heartbeat_status.data);
 		
 		docking_status_decode.heartbeat_status = docking_protocol.decodeResponeStatus();

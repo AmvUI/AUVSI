@@ -139,13 +139,10 @@ int main(int argc, char **argv)
 		ROS_WARN("NC: drone data");
 		ROS_INFO("drone: %s", drone_status.c_str());
 		
-		/*
-		ROS_INFO("run_course:%s", run_course_payload.c_str());
 		ROS_INFO("heartbeat:%s", heartbeat_payload.c_str());
-		ROS_INFO("follow:%s", follow_payload.c_str());
+		ROS_INFO("flag:%s", flag_payload.c_str());
 		ROS_INFO("docking:%s", docking_payload.c_str());
 		ROS_INFO(" ");
-		*/
 		
 		sleep(1);
 		system("clear");
@@ -153,21 +150,16 @@ int main(int argc, char **argv)
 }
 
 void decode_status_cb	(const kocheng::decode_status& data){
-	run_course_status	= data.run_course_status;
 	heartbeat_status	= data.heartbeat_status;
-	follow_status		= data.follow_status;
 	docking_status		= data.docking_status;
 	flag_status			= data.flag_status;
 }
-/*
 void string_payload_cb	(const kocheng::communication& data){
 	heartbeat_payload	= data.heartbeat_payload;
-	run_course_payload	= data.run_course_payload;
-	follow_payload		= data.follow_payload;
 	docking_payload		= data.docking_payload;
-	flag_status			= data.flag_status;
+	flag_payload		= data.flag_payload;
 }
-*/
+
 void image_in_cb(const kocheng::image_in& in){
 	x_init	= in.x_init;
 	y_init	= in.y_init;

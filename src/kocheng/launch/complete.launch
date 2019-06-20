@@ -4,7 +4,7 @@
 	<node name="remote_monitor" pkg="kocheng" output="screen" type="remote_monitor" />
 	<node name="image_front" pkg="kocheng" output="screen" type="image_front" />
 	<node name="image_processing" pkg="kocheng" output="screen" type="image_processing" />
-	<node name="debug_makara" pkg="kocheng" output="screen" type="debug_makara"/>
+	<!-- node name="debug_makara" pkg="kocheng" output="screen" type="debug_makara"-->
 	
 	<node name="flag" pkg="kocheng" output="screen" type="flag" />
 	<node name="docking" pkg="kocheng" output="screen" type="docking"/>

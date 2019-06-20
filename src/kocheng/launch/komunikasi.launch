@@ -1,0 +1,4 @@
+<launch>	
+	<node name="heartbeat" pkg="kocheng" output="screen" type="heartbeat" />
+</launch>
+

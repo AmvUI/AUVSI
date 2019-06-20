@@ -22,10 +22,10 @@ using namespace std;
 
 //#############################################################################################  MAIN VARIABLE  ###############
 string	challenge_status	= "idle";
-string 	server_ip			= "10.0.2.2";
-int 	server_port			= 80;
-string 	team_code			= "AMVUI";
-string	course_type 		= "kolam"; //courseA courseB courseC courseUI kolam
+string 	server_ip			= "ROBOT.SERVER";
+int 	server_port			= 9000;
+string 	team_code			= "UI"; //UI
+string	course_type 		= "courseA"; //courseA courseB courseC courseUI kolam
 
 #define STEERING 0
 #define THROTTLE 2
