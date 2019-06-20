@@ -296,58 +296,6 @@ image_front/fast:
 .PHONY : image_front/fast
 
 #=============================================================================
-# Target rules for targets named debug_makara
-
-# Build rule for target.
-debug_makara: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 debug_makara
-.PHONY : debug_makara
-
-# fast build rule for target.
-debug_makara/fast:
-	$(MAKE) -f kocheng/CMakeFiles/debug_makara.dir/build.make kocheng/CMakeFiles/debug_makara.dir/build
-.PHONY : debug_makara/fast
-
-#=============================================================================
-# Target rules for targets named motor_controller
-
-# Build rule for target.
-motor_controller: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 motor_controller
-.PHONY : motor_controller
-
-# fast build rule for target.
-motor_controller/fast:
-	$(MAKE) -f kocheng/CMakeFiles/motor_controller.dir/build.make kocheng/CMakeFiles/motor_controller.dir/build
-.PHONY : motor_controller/fast
-
-#=============================================================================
-# Target rules for targets named node_controller
-
-# Build rule for target.
-node_controller: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 node_controller
-.PHONY : node_controller
-
-# fast build rule for target.
-node_controller/fast:
-	$(MAKE) -f kocheng/CMakeFiles/node_controller.dir/build.make kocheng/CMakeFiles/node_controller.dir/build
-.PHONY : node_controller/fast
-
-#=============================================================================
-# Target rules for targets named flag_drone
-
-# Build rule for target.
-flag_drone: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 flag_drone
-.PHONY : flag_drone
-
-# fast build rule for target.
-flag_drone/fast:
-	$(MAKE) -f kocheng/CMakeFiles/flag_drone.dir/build.make kocheng/CMakeFiles/flag_drone.dir/build
-.PHONY : flag_drone/fast
-
-#=============================================================================
 # Target rules for targets named remote_monitor
 
 # Build rule for target.
@@ -725,19 +673,6 @@ geometry_msgs_generate_messages_cpp/fast:
 .PHONY : geometry_msgs_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named flag
-
-# Build rule for target.
-flag: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 flag
-.PHONY : flag
-
-# fast build rule for target.
-flag/fast:
-	$(MAKE) -f kocheng/CMakeFiles/flag.dir/build.make kocheng/CMakeFiles/flag.dir/build
-.PHONY : flag/fast
-
-#=============================================================================
 # Target rules for targets named mavros_msgs_generate_messages_cpp
 
 # Build rule for target.
@@ -788,32 +723,6 @@ std_msgs_generate_messages_cpp: cmake_check_build_system
 std_msgs_generate_messages_cpp/fast:
 	$(MAKE) -f kocheng/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make kocheng/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
 .PHONY : std_msgs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named image_drone
-
-# Build rule for target.
-image_drone: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 image_drone
-.PHONY : image_drone
-
-# fast build rule for target.
-image_drone/fast:
-	$(MAKE) -f kocheng/CMakeFiles/image_drone.dir/build.make kocheng/CMakeFiles/image_drone.dir/build
-.PHONY : image_drone/fast
-
-#=============================================================================
-# Target rules for targets named docking
-
-# Build rule for target.
-docking: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 docking
-.PHONY : docking
-
-# fast build rule for target.
-docking/fast:
-	$(MAKE) -f kocheng/CMakeFiles/docking.dir/build.make kocheng/CMakeFiles/docking.dir/build
-.PHONY : docking/fast
 
 #=============================================================================
 # Target rules for targets named sensor_msgs_generate_messages_py
@@ -1241,10 +1150,6 @@ help:
 	@echo "... gtest"
 	@echo "... gtest_main"
 	@echo "... image_front"
-	@echo "... debug_makara"
-	@echo "... motor_controller"
-	@echo "... node_controller"
-	@echo "... flag_drone"
 	@echo "... remote_monitor"
 	@echo "... heartbeat"
 	@echo "... kocheng_genpy"
@@ -1274,13 +1179,10 @@ help:
 	@echo "... roscpp_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_nodejs"
 	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... flag"
 	@echo "... mavros_msgs_generate_messages_cpp"
 	@echo "... rosgraph_msgs_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... image_drone"
-	@echo "... docking"
 	@echo "... sensor_msgs_generate_messages_py"
 	@echo "... mavros_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_lisp"

@@ -27,6 +27,19 @@ int 	server_port			= 9000;
 string 	team_code			= "UI"; //UI
 string	course_type 		= "courseB"; //courseA courseB courseC courseUI kolam
 
+int latA = 29.15165250 ;
+int longA = -81.01707730;
+
+int latB = 29.15201030 ;
+int longB = -81.01677300;
+
+int latC = 29.15127810 ;
+int longC = -81.01614720;
+
+int tolerance_gps = 0.00025000;
+
+int dock_number=2;
+			
 #define STEERING 0
 #define THROTTLE 2
 #define SIMPLE_PIN 3

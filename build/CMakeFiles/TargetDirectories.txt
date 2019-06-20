@@ -33,10 +33,6 @@
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/install/local.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/install/strip.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/image_front.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/debug_makara.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/motor_controller.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/node_controller.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/flag_drone.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/remote_monitor.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/heartbeat.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/kocheng_genpy.dir
@@ -69,13 +65,10 @@
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/test.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/geometry_msgs_generate_messages_cpp.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/flag.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/mavros_msgs_generate_messages_cpp.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/sensor_msgs_generate_messages_eus.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/std_msgs_generate_messages_cpp.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/image_drone.dir
-/home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/docking.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/sensor_msgs_generate_messages_py.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/mavros_msgs_generate_messages_lisp.dir
 /home/mfikih15/Documents/AUVSI/build/kocheng/CMakeFiles/sensor_msgs_generate_messages_lisp.dir

@@ -179,21 +179,6 @@ target_link_libraries(remote_monitor
 ${catkin_LIBRARIES}
 )
 
-add_executable(node_controller src/main/node_controller.cpp )
-target_link_libraries(node_controller
-${catkin_LIBRARIES}
-)
-
-add_executable(motor_controller src/main/motor_controller.cpp )
-target_link_libraries(motor_controller
-${catkin_LIBRARIES}
-)
-
-add_executable(debug_makara src/main/debug_makara.cpp )
-target_link_libraries(debug_makara
-${catkin_LIBRARIES}
-)
-
 add_executable(image_front src/main/image_front.cpp )
 target_link_libraries(image_front
 ${catkin_LIBRARIES}
@@ -202,28 +187,6 @@ ${OpenCV_LIBRARIES}
 
 add_executable(image_processing src/main/image_processing.cpp )
 target_link_libraries(image_processing
-${catkin_LIBRARIES}
-${OpenCV_LIBRARIES}
-)
-
-add_executable(flag src/mission/flag.cpp )
-target_link_libraries(flag
-${catkin_LIBRARIES}
-)
-
-add_executable(docking src/mission/docking.cpp )
-target_link_libraries(docking
-${catkin_LIBRARIES}
-)
-
-add_executable(image_drone src/drone/image_drone.cpp )
-target_link_libraries(image_drone
-${catkin_LIBRARIES}
-${OpenCV_LIBRARIES}
-)
-
-add_executable(flag_drone src/drone/flag_drone.cpp )
-target_link_libraries(flag_drone
 ${catkin_LIBRARIES}
 ${OpenCV_LIBRARIES}
 )

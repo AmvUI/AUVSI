@@ -41,7 +41,8 @@ int main(int argc, char **argv){
 	ros::Subscriber sub_mode_rc = heartbeat_nh.subscribe("/auvsi/mode/number", 1, modeCB);
 	
 	HeartbeatMessage auvsi_protocol(server_ip, server_port, course_type, team_code);
-	
+	DockingMission docking_protocol(server_ip, server_port, course_type, team_code);
+
 	ros::Rate loop_rate(1);
 
 	/*	Do not wait for data, always sent data no matter what the data is.
@@ -68,6 +69,25 @@ int main(int argc, char **argv){
 		heartbeat_status_decode.heartbeat_status = auvsi_protocol.decodeResponeStatus();
 		pub_run_status.publish(heartbeat_status_decode);
 		pub_payload_status.publish(heartbeat_payload_string);
+		
+		if(global_position.latitude >= latA-tolerance_gps && global_position.latitude <= latA+tolerance_gps){
+			docking_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), dock_number);
+			docking_protocol.sendTCP();
+			cout << docking_protocol.getPayload()<<endl;
+			cout << docking_protocol.getResponse()<<endl;
+		} 
+		if(global_position.latitude >= latB-tolerance_gps && global_position.latitude <= latB+tolerance_gps){
+			docking_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), dock_number);
+			docking_protocol.sendTCP();
+			cout << docking_protocol.getPayload()<<endl;
+			cout << docking_protocol.getResponse()<<endl;
+		}
+		if(global_position.latitude >= latC-tolerance_gps && global_position.latitude <= latC+tolerance_gps){
+			docking_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), dock_number);
+			docking_protocol.sendTCP();
+			cout << docking_protocol.getPayload()<<endl;
+			cout << docking_protocol.getResponse()<<endl;
+		}
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
