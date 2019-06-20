@@ -182,7 +182,7 @@ int AUVSICommunication::sendTCP(){
     struct sockaddr_in server;
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     if (socket_desc == -1){
-		cout << "Could not create socket";
+		//cout << "Could not create socket";
 		response_message = "No data";
 		return -1;
     }
@@ -193,18 +193,18 @@ int AUVSICommunication::sendTCP(){
 
     // ################## connect to remote server ################## //
     if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0){
-		cout << "connect error\n";
+		//cout << "connect error\n";
 		response_message = "No data";
 		return -1;
     }
 
-    cout << "Connected\n";
+    //cout << "Connected\n";
     // ################## connect to remote server ################## //
 
     // ################## Send some data ################## //
     //cout << "Message size " << payload.size() << endl;
     if( send(socket_desc , payload.c_str() , payload.size(), 0) < 0){
-		cout << "Send failed";
+		//cout << "Send failed";
 		response_message = "No data";
 		return -1;
     }
@@ -229,7 +229,7 @@ int AUVSICommunication::sendTCP(){
 		bytesReceived = recv(socket_desc, buffer.data(), buffer.size(), 0);
 		// append string from buffer.
 		if ( bytesReceived == -1 ) {
-			cout << "recv failed" <<endl;
+			//cout << "recv failed" <<endl;
 			response_message = "No data";
 			return -1;
 
@@ -245,7 +245,7 @@ int AUVSICommunication::sendTCP(){
 		return -1;
     }
 
-    cout << "Reply received\n";
+    //cout << "Reply received\n";
     // ################## Receive some data ################## //
 
     // ################## Convert to string ################## //
