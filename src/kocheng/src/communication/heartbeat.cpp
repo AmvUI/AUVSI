@@ -53,11 +53,8 @@ int main(int argc, char **argv){
 
 	ROS_INFO("Starting Heartbeat.");
 	
-	system("rosrun mavros mavwp clear"); //clear wp
-	string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_all.waypoints";
-	system(command.c_str());
-	
 	while(ros::ok()){
+		//if (mode == 3){mode = 2;}
 		auvsi_protocol.setPayloadCommunication(time_lord.getYMD(), time_lord.getHMS(), challenge_status, global_position.latitude,global_position.longitude,mode);
 		auvsi_protocol.sendTCP();
 		

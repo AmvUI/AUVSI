@@ -42,6 +42,10 @@ int main(int argc, char **argv){
 		
 	ROS_WARN("NC : remote_monitor.cpp active");
 	
+	system("rosrun mavros mavwp clear"); //clear wp
+	string command = "rosrun mavros mavwp load ~/waypoints/"+course_type+"_all.waypoints";
+	system(command.c_str());
+	
 	while (ros::ok()) {
 		ros::spinOnce();
 		//cout<<rc_in_data_channel[SIMPLE_PIN]<<endl;
@@ -80,10 +84,10 @@ void rcinReceiver(const mavros_msgs::RCIn& rc_in_data){
 		mode.data = 3;
 	}
 	else{
-		if(rc_in_data_channel[MODE_PIN] < PWM_LOW){
+		if(rc_in_data_channel[MODE_PIN] < PWM_LOW){//auto
 			mode.data = 2;
 		}
-		else{
+		else{//manual
 			mode.data=1;
 		}
 	}

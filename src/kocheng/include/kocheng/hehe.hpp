@@ -13,6 +13,7 @@
 #include <netinet/in.h>
 #include <ctype.h>
 #include <iomanip>
+#include <bits/stdc++.h>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -25,7 +26,7 @@ string	challenge_status	= "idle";
 string 	server_ip			= "192.168.66.2"; //A 192.168.65.2 B 192.168.66.2 C 192.168.67.2
 int 	server_port			= 9000;
 string 	team_code			= "UI"; //UI
-string	course_type 		= "courseB"; //courseA courseB courseC courseUI kolam
+string	course_type 		= "courseC"; //courseA courseB courseC courseUI kolam
 
 int latA = 29.15165250 ;
 int longA = -81.01707730;
@@ -387,7 +388,10 @@ void HeartbeatMessage::setPayloadCommunication(string timestamp_mission, string 
 	stream << std::hex << crc;
 	std::string ss_check_sum( stream.str() );
 	
-    all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
+	
+	transform(ss_check_sum.begin(),ss_check_sum.end(),ss_check_sum.begin(),::toupper); 
+	
+	all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
     
     payload = all_payload;
 }
@@ -422,6 +426,8 @@ void DockingMission::setPayloadCommunication(string timestamp_mission, string ti
 	stream << std::hex << crc;
 	std::string ss_check_sum( stream.str() );
 	
+	transform(ss_check_sum.begin(),ss_check_sum.end(),ss_check_sum.begin(),::toupper); 
+	
     all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
 	
     payload = all_payload;
@@ -454,6 +460,8 @@ void FlagMission::setPayloadCommunication(string timestamp_mission, string times
 	std::stringstream stream;
 	stream << std::hex << crc;
 	std::string ss_check_sum( stream.str() );
+	
+	transform(ss_check_sum.begin(),ss_check_sum.end(),ss_check_sum.begin(),::toupper); 
 	
     all_payload = "$" + payload_msg + "*" + ss_check_sum + "\r\n";
 	
